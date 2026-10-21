@@ -85,10 +85,13 @@ def load_records(path):
 #                that is a stretch worth trying - but a variable is enough.)
 
 
-for record in load_records("LAB/records_sample.txt"):
+for record in load_records("records_sample.txt"):
     print()
     print("=" * 34)
     print(f"  RECORD CHECK  -  {record.label}")
+    print(f"Label : {record.label}")
+    print(f"Value : {record.value}")
+    print(f"Limit : {record.limit}")
     print("=" * 34)
 
     # your report lines go here
