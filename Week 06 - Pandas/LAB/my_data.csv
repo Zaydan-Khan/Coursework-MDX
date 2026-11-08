@@ -1,0 +1,7 @@
+dataset,rows_loaded,rows_expected
+survey_2026,1187,1200
+customer_data,950,1000
+weather_data,850,900
+sales_2026,1050,1000
+training_data,720,800
+image_dataset,450,500
