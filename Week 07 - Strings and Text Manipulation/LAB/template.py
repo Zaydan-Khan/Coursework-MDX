@@ -1,15 +1,13 @@
+
 """
-RECORD CHECK  -  my version
-===========================
+  RECORD CHECK - my version
+  =========================
 
-Name  :
-Lane  :  AI / Cyber / IT      (delete two)
-Date  :
+  Name  :
+  Lane  : AI / Data Science
+  Date  :
 
-Run it:   python template.py
-
-Work through the numbered sections in order. Each one tells you what it must do.
-Delete these instructions as you replace them with your code.
+  Run it:   python template.py
 """
 
 # =================================================================== FUNCTIONS
@@ -21,7 +19,30 @@ Delete these instructions as you replace them with your code.
 #    (e.g. OVER LIMIT / WARNING / OK, or FLAGGED / OK). Give both a
 #    one-line docstring.
 
-# your function(s) go here
+
+def parse_line(raw_line):
+    """Clean and parse one survey record into a dictionary."""
+    cleaned = raw_line.strip().lower()
+
+    parts = cleaned.split(",")
+
+    survey = parts[0].strip()
+
+    record = {"survey": survey}
+
+    for item in parts[1:]:
+        key, value = item.split("=")
+        record[key.strip()] = float(value.strip())
+
+    return record
+
+
+def status_of(rating):
+    """Return FLAGGED or OK based on the survey rating."""
+    if rating < 3:
+        return "FLAGGED"
+    else:
+        return "OK"
 
 
 # ====================================================================== INPUT
@@ -35,7 +56,11 @@ Delete these instructions as you replace them with your code.
 #    Excellent: save these lines to a file and load them with open() /
 #    a for loop over the file, instead of writing them directly here.
 
-raw_records = []   # replace with your code
+raw_records = []
+
+with open("messy_records.txt") as f:
+    for line in f:
+        raw_records.append(line)
 
 
 # =============================================================== PROCESS + OUTPUT
@@ -44,10 +69,25 @@ raw_records = []   # replace with your code
 #    Threshold : parse each record, print the cleaned dict.
 #    Typical   : also call status_of(...) for each, print it alongside.
 #    Excellent : print a one-line summary at the end - how many records,
-#                how many flagged.
+#                how many were flagged.
+
+total_records = 0
+flagged_records = 0
 
 for raw_record in raw_records:
-    pass   # replace with your code
+    record = parse_line(raw_record)
+
+    status = status_of(record["rating"])
+
+    print(record, status)
+
+    total_records += 1
+
+    if status == "FLAGGED":
+        flagged_records += 1
+
+print(f"\nTotal records: {total_records}")
+print(f"Flagged records: {flagged_records}")
 
 
 # ==========================================================================
@@ -57,3 +97,9 @@ for raw_record in raw_records:
 #    [ ] Run it with a value that will not convert to a number - write the
 #        error down
 #    [ ] Check every function does one job, with a docstring
+
+# Testing an invalid value:
+# parse_line("Survey_2026,rating=unknown,age=23")
+#
+# Expected error:
+# ValueError: could not convert string to float: 'unknown'
